@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "status": "draft",
+  "media": {
+    "label_width_mm": 76,
+    "label_height_mm": 50,
+    "inter_label_gap_mm": 3,
+    "label_pitch_mm": 53,
+    "feed": "roll",
+    "stock": "adhesive_non_direct_thermal"
+  },
+  "printer": {
+    "part_number": "ZD4A042-30EM00EZ",
+    "dpi": null,
+    "print_method": "confirm_thermal_transfer",
+    "ribbon": "confirm_compatible_ribbon"
+  },
+  "job": {
+    "labels_per_run": 1,
+    "output": "pdf_via_conga_composer"
+  },
+  "layout": {
+    "page_width_mm": 76,
+    "page_height_mm": 50,
+    "provisional_safe_margin_mm": 3,
+    "horizontal_alignment": "center",
+    "vertical_alignment": "center_name_and_organization_as_one_block",
+    "name": {
+      "merge_text": "{{FIRST_NAME_FIELD}} {{LAST_NAME_FIELD}}",
+      "initial_font_family": "Arial",
+      "initial_font_pt": 26,
+      "minimum_font_pt": 15,
+      "weight": "bold",
+      "maximum_lines": 2,
+      "short_names_on_one_line": true,
+      "overflow": "review_smaller_fallback_or_approved_display_name"
+    },
+    "organization": {
+      "merge_text": "{{BADGE_ORGANIZATION_FIELD}}",
+      "initial_font_family": "Arial",
+      "initial_font_pt": 15,
+      "minimum_font_pt": 15,
+      "maximum_lines": 1,
+      "overflow": "use_approved_abbreviation",
+      "blank_fallback": "Individual Donor"
+    }
+  }
+}
