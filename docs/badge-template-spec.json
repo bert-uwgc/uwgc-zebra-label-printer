@@ -39,6 +39,16 @@
     "labels_per_run": 1,
     "output": "pdf_via_conga_composer"
   },
+  "salesforce_source_fields": {
+    "preferred_name": "Contact.Preferred_Communication_Name__c",
+    "last_name": "Contact.LastName",
+    "primary_affiliation": "Contact.Primary_Affiliation__c"
+  },
+  "conga_word_merge_tokens": {
+    "preferred_name": "confirm_in_template_builder",
+    "last_name": "confirm_in_template_builder",
+    "primary_affiliation": "confirm_in_template_builder"
+  },
   "layout": {
     "page_width_mm": 79,
     "page_height_mm": 50,
@@ -51,7 +61,7 @@
     "horizontal_alignment": "center",
     "vertical_alignment": "center_name_and_organization_as_one_block",
     "name": {
-      "merge_text": "{{FIRST_NAME_FIELD}} {{LAST_NAME_FIELD}}",
+      "merge_text": "{{PREFERRED_NAME_CONGA_FIELD}} {{LAST_NAME_CONGA_FIELD}}",
       "initial_font_family": "Arial",
       "initial_font_pt": 26,
       "minimum_font_pt": 15,
@@ -61,7 +71,7 @@
       "overflow": "review_smaller_fallback_or_approved_display_name"
     },
     "organization": {
-      "merge_text": "{{BADGE_ORGANIZATION_FIELD}}",
+      "merge_text": "{{PRIMARY_AFFILIATION_CONGA_FIELD}}",
       "initial_font_family": "Arial",
       "initial_font_pt": 15,
       "minimum_font_pt": 15,
