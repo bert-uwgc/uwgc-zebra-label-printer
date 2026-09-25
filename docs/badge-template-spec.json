@@ -4,6 +4,10 @@
   "media": {
     "label_width_mm": 76,
     "label_height_mm": 50,
+    "roll_width_including_liner_mm": 79,
+    "liner_overhang_total_mm": 3,
+    "label_offset_from_roll_left_mm": 1.5,
+    "label_offset_from_roll_right_mm": 1.5,
     "inter_label_gap_mm": 3,
     "label_pitch_mm": 53,
     "feed": "roll",
@@ -15,12 +19,19 @@
     "dpi": 203,
     "dpi_evidence": "Windows 11 driver name reported by user",
     "printer_language": "ZPL",
-    "print_method": "confirm_thermal_transfer",
-    "ribbon": "confirm_compatible_ribbon"
+    "print_method": "thermal_transfer_ribbon_installed_driver_mode_to_verify",
+    "ribbon_color": "black",
+    "ribbon_location_reported": "top",
+    "ribbon_width_mm": 110,
+    "ribbon_covers_full_roll_width": true,
+    "ribbon_media_compatibility": "confirm"
   },
   "raster_reference_at_8_dots_per_mm": {
     "label_width_dots": 608,
     "label_height_dots": 400,
+    "roll_width_including_liner_dots": 632,
+    "liner_overhang_total_dots": 24,
+    "label_offset_from_roll_left_dots": 12,
     "inter_label_gap_dots": 24,
     "label_pitch_dots": 424
   },
@@ -29,9 +40,14 @@
     "output": "pdf_via_conga_composer"
   },
   "layout": {
-    "page_width_mm": 76,
+    "page_width_mm": 79,
     "page_height_mm": 50,
-    "provisional_safe_margin_mm": 3,
+    "sticker_width_mm": 76,
+    "sticker_left_inset_on_page_mm": 1.5,
+    "provisional_safe_margin_inside_sticker_mm": 3,
+    "content_left_margin_from_page_mm": 4.5,
+    "content_right_margin_from_page_mm": 4.5,
+    "content_width_mm": 70,
     "horizontal_alignment": "center",
     "vertical_alignment": "center_name_and_organization_as_one_block",
     "name": {
