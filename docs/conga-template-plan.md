@@ -4,6 +4,17 @@ The first version is a single-badge Word template for Conga Composer for Salesfo
 
 Synthetic [one-line](badge-preview-short.png) and [two-line](badge-preview-long.png) previews show the intended arrangement on the **76 mm sticker only**. They are geometry previews rendered at 203 dpi, matching the Windows 11 driver name reported by the user, not Conga output or files to send to the printer.
 
+## Building the Word template
+
+[tools/build_conga_badge_template.py](../tools/build_conga_badge_template.py) generates `templates/conga-badge-template.docx` from the spec, using only the Python standard library. Once the exact Template Builder tokens are known, pass them in and rebuild instead of editing field codes by hand:
+
+```
+python tools/build_conga_badge_template.py --preferred-name-token "{{...}}" --last-name-token "{{...}}" --affiliation-token "{{...}}"
+python -m unittest tests.test_build_conga_badge_template
+```
+
+The affiliation paragraph is a real Word IF field wrapping the Conga token. Press Alt+F9 in Word to see the field code. With placeholder tokens the text looks clipped in Word because the tokens are longer than real names. Merged output is the thing to judge.
+
 ## Artwork and media
 
 - Set the Word and PDF page to **79 mm wide by 50 mm high**, matching the roll width including backing and the sticker length. The **76 mm sticker** is centered, leaving **1.5 mm of backing on each side**. Keep text at least a provisional **3 mm inside the sticker**, which means a **4.5 mm page margin** on the left and right and a 70 mm content width. Verify the driver's horizontal origin with a print proof.
