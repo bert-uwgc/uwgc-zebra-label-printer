@@ -11,9 +11,18 @@
   },
   "printer": {
     "part_number": "ZD4A042-30EM00EZ",
-    "dpi": null,
+    "driver_name": "ZDesigner ZD421-203dpi ZPL",
+    "dpi": 203,
+    "dpi_evidence": "Windows 11 driver name reported by user",
+    "printer_language": "ZPL",
     "print_method": "confirm_thermal_transfer",
     "ribbon": "confirm_compatible_ribbon"
+  },
+  "raster_reference_at_8_dots_per_mm": {
+    "label_width_dots": 608,
+    "label_height_dots": 400,
+    "inter_label_gap_dots": 24,
+    "label_pitch_dots": 424
   },
   "job": {
     "labels_per_run": 1,
