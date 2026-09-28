@@ -20,18 +20,46 @@ After ATS confirms installation, follow their connection instructions and connec
 
    ![ZD421 printer properties with Preferences button](../images/Screenshot%202026-09-25%20142250.png)
 
-3. In **Printer Settings > Page Setup**, find **Stock** and **Media settings**. Check the label **Width**, **Height**, and **Media type** controls. These are the main configuration settings for label sizing and media.
-
-   ![ZD421 Printing Preferences Page Setup showing stock and media settings](../images/Screenshot%202026-09-25%20142312.png)
-
-4. Open **Units** in the left menu. Set **Default measurement units** to **millimeter** so the size is displayed in metric units.
+3. Open **Units** in the left menu. Set **Default measurement units** to **millimeter** so the size is displayed in metric units.
 
    ![ZD421 Printing Preferences Units set to millimeter](../images/Screenshot%202026-09-25%20142507.png)
 
-5. Return to **Page Setup**. **The printer should control the label size and media settings.** For **Width**, **Height**, and **Media type**, select or verify the option to use the settings set on the printer. Do not substitute a custom size or media type in the computer's driver. Select **Apply**, then **OK**.
+4. Return to **Page Setup**. Use the following settings for the current badge labels:
 
-   ![ZD421 Page Setup after checking printer controlled size and media](../images/Screenshot%202026-09-25%20142703.png)
+   | Setting | Value |
+   | --- | --- |
+   | Stock > Select | Custom |
+   | Width | 76 mm |
+   | Height | 50 mm |
+   | Media type | Labels with gaps |
+   | Rotation | 0° - Portrait |
+   | Mirror label / Inverse | Off / Off |
 
-If the printer controlled option is unavailable, or the screen differs from these images, stop and ask ATS to review the driver configuration.
+   The driver should show **Custom**, rather than use the printer's size setting. These values reflect the settings that produced better results with the current labels.
+
+   ![ZD421 Page Setup with Custom 76 by 50 mm labels with gaps](../images/Screenshot%202026-09-28%20150729.png)
+
+5. Open **Print Options** and check the current settings:
+
+   | Setting | Value |
+   | --- | --- |
+   | Speed | 102 mm/s |
+   | Darkness | 15 |
+   | Printing mode | Thermal transfer |
+   | Top offset | 2 mm |
+   | Left offset | 1 mm |
+   | Backfeed | Default |
+   | Pause | No pause |
+   | Control characters | Standard |
+   | RTC refresh | Start print time |
+   | Cancel all current and queued printing documents | Off |
+
+   ![ZD421 Print Options showing speed, darkness, thermal transfer, and offsets](../images/Screenshot%202026-09-28%20150751.png)
+
+6. If you changed settings, select **Apply**, then **OK**. If the screen differs or a setting is unavailable, ask ATS to review the driver configuration.
+
+## 4. Recalibrate if the printer cannot detect the labels
+
+If the printer reports a media or label detection error, make sure labels are loaded correctly, the cover is closed, and the printer is on. Press and hold **Pause** and **Cancel** together for about **3 seconds**, then release. The printer should feed and measure a few labels. Wait for the **Status** light to return to solid green before printing again. Zebra specifies a two-second hold for this [SmartCal media calibration procedure](https://docs.zebra.com/us/en/printers/desktop/zd421-and-zd621-desktop-printers-user-guide/setup/running-a-smartcal-media-calibration.html). If the printer still cannot recognize the labels, ask ATS for help.
 
 Zebra also directs Windows users to install the correct driver before connecting the printer to the computer: [ZD421 Windows driver setup](https://docs.zebra.com/us/en/printers/desktop/zd421-and-zd621-desktop-printers-user-guide/c-zd620-420-setup-for-windows/t-zd620-zd420-installing-the-windows-printer-drivers.html).
