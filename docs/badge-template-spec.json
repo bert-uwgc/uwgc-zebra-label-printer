@@ -42,12 +42,16 @@
   "salesforce_source_fields": {
     "preferred_name": "Contact.Preferred_Communication_Name__c",
     "last_name": "Contact.LastName",
-    "primary_affiliation": "Contact.Primary_Affiliation__c"
+    "primary_affiliation": "Contact.Primary_Affiliation__c",
+    "retired_from_primary_affiliation": "confirm_with_salesforce_owner",
+    "board_affiliations": "confirm_with_salesforce_owner"
   },
   "conga_word_merge_tokens": {
     "preferred_name": "confirm_in_template_builder",
     "last_name": "confirm_in_template_builder",
-    "primary_affiliation": "confirm_in_template_builder"
+    "primary_affiliation": "confirm_in_template_builder",
+    "retired_from_primary_affiliation": "confirm_in_template_builder",
+    "board_affiliations": "confirm_in_template_builder"
   },
   "layout": {
     "page_width_mm": 79,
@@ -59,7 +63,7 @@
     "content_right_margin_from_page_mm": 4.5,
     "content_width_mm": 70,
     "horizontal_alignment": "center",
-    "vertical_alignment": "center_name_and_organization_as_one_block",
+    "vertical_alignment": "center_name_affiliation_and_board_as_one_block",
     "name": {
       "merge_text": "{{PREFERRED_NAME_CONGA_FIELD}} {{LAST_NAME_CONGA_FIELD}}",
       "initial_font_family": "Arial",
@@ -77,7 +81,28 @@
       "minimum_font_pt": 15,
       "maximum_lines": 1,
       "overflow": "use_approved_abbreviation",
-      "blank_fallback": "Individual Donor"
+      "blank_fallback": "Individual Donor",
+      "retired_suffix": " (Retired)",
+      "retired_suffix_condition": "append_only_when_primary_affiliation_is_nonblank_and_retired_status_is_true",
+      "retired_status_true_value": "True",
+      "retired_status_source_contract": "must_be_false_when_primary_affiliation_is_blank",
+      "retired_status_merge_text": "{{RETIRED_STATUS_CONGA_FIELD}}"
+    },
+    "board_affiliations": {
+      "merge_text": "{{BOARD_AFFILIATIONS_CONGA_FIELD}}",
+      "initial_font_family": "Arial",
+      "initial_font_pt": 15,
+      "minimum_font_pt": 15,
+      "maximum_lines": 2,
+      "allowed_values": [
+        "Board of Directors",
+        "Foundation Board"
+      ],
+      "multiple_values_allowed": true,
+      "multiple_values_layout": "one_line_per_affiliation",
+      "multiple_values_separator": "line_break_in_merged_value",
+      "blank_behavior": "omit_visible_text",
+      "overflow": "review_approved_abbreviation_or_layout"
     }
   }
 }

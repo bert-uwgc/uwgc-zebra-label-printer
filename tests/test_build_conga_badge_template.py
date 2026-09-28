@@ -1,8 +1,8 @@
 import re
 import subprocess
 import sys
-import tempfile
 import unittest
+import uuid
 import zipfile
 from pathlib import Path
 
@@ -17,8 +17,9 @@ def mm_to_twips(mm):
 class BuildCongaBadgeTemplateTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.tmp = tempfile.TemporaryDirectory()
-        cls.out = Path(cls.tmp.name) / "badge.docx"
+        cls.tmp = REPO / "tests" / ".tmp"
+        cls.tmp.mkdir(exist_ok=True)
+        cls.out = cls.tmp / f"badge-{uuid.uuid4().hex}.docx"
         subprocess.run(
             [sys.executable, str(BUILDER), "--output", str(cls.out)],
             check=True,
@@ -29,7 +30,7 @@ class BuildCongaBadgeTemplateTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.tmp.cleanup()
+        cls.out.unlink(missing_ok=True)
 
     def test_package_has_required_parts(self):
         for part in ("[Content_Types].xml", "_rels/.rels", "word/document.xml",
@@ -73,19 +74,51 @@ class BuildCongaBadgeTemplateTest(unittest.TestCase):
         )
         self.assertIn('<w:sz w:val="30"/>', self.doc)
 
+    def test_retirement_and_board_affiliations_are_in_the_badge(self):
+        self.assertIn(
+            ' IF "{{RETIRED_STATUS_CONGA_FIELD}}" = "True" " (Retired)" "" ',
+            self.doc,
+        )
+        self.assertRegex(
+            self.doc,
+            re.compile(
+                r'IF "{{RETIRED_STATUS_CONGA_FIELD}}" = "True".*?'
+                r'fldCharType="separate".*?'
+                r'<w:t[^>]*>{{RETIRED_STATUS_CONGA_FIELD}}</w:t>',
+                re.S,
+            ),
+        )
+        self.assertIn(
+            ' IF "{{BOARD_AFFILIATIONS_CONGA_FIELD}}" = "" "" '
+            '"{{BOARD_AFFILIATIONS_CONGA_FIELD}}" ',
+            self.doc,
+        )
+        board_para = re.search(
+            r"<w:p>(?:(?!</w:p>).)*BOARD_AFFILIATIONS_CONGA_FIELD(?:(?!</w:p>).)*</w:p>",
+            self.doc,
+            re.S,
+        )
+        self.assertIsNotNone(board_para)
+        self.assertIn('<w:sz w:val="30"/>', board_para.group(0))
+
     def test_custom_tokens_replace_placeholders(self):
-        out = Path(self.tmp.name) / "custom.docx"
+        out = self.tmp / f"custom-{uuid.uuid4().hex}.docx"
+        self.addCleanup(out.unlink, missing_ok=True)
         subprocess.run(
             [sys.executable, str(BUILDER), "--output", str(out),
              "--preferred-name-token", "{{PREF}}",
              "--last-name-token", "{{LAST}}",
-             "--affiliation-token", "{{AFFIL}}"],
+             "--affiliation-token", "{{AFFIL}}",
+             "--retired-token", "{{RETIRED}}",
+             "--board-affiliations-token", "{{BOARD}}"],
             check=True,
         )
         with zipfile.ZipFile(out) as z:
             doc = z.read("word/document.xml").decode("utf-8")
         self.assertIn("{{PREF}} {{LAST}}", doc)
         self.assertIn('IF "{{AFFIL}}" = ""', doc)
+        self.assertIn('IF "{{RETIRED}}" = "True"', doc)
+        self.assertIn('IF "{{BOARD}}" = ""', doc)
         self.assertNotIn("CONGA_FIELD", doc)
 
 

@@ -4,7 +4,8 @@ Uses only the Python standard library so the template can be rebuilt anywhere:
 
     python tools/build_conga_badge_template.py
     python tools/build_conga_badge_template.py --preferred-name-token "{{...}}" \
-        --last-name-token "{{...}}" --affiliation-token "{{...}}"
+        --last-name-token "{{...}}" --affiliation-token "{{...}}" \
+        --retired-token "{{...}}" --board-affiliations-token "{{...}}"
 
 Pass the exact tokens copied from Conga Template Builder once they are known.
 """
@@ -62,25 +63,42 @@ def name_paragraph(spec, preferred_token, last_token):
     )
 
 
-def affiliation_paragraph(spec, token):
+def word_if_field(rpr, code, placeholder):
+    return (
+        f'<w:r>{rpr}<w:fldChar w:fldCharType="begin"/></w:r>'
+        f'<w:r>{rpr}<w:instrText xml:space="preserve">{escape(code)}</w:instrText></w:r>'
+        f'<w:r>{rpr}<w:fldChar w:fldCharType="separate"/></w:r>'
+        f"{text_run(rpr, placeholder)}"
+        f'<w:r>{rpr}<w:fldChar w:fldCharType="end"/></w:r>'
+    )
+
+
+def affiliation_paragraph(spec, token, retired_token):
     org = spec["layout"]["organization"]
     rpr = run_props(org["initial_font_family"], org["initial_font_pt"])
     fallback = org["blank_fallback"]
     # A real Word IF field with the Conga token inside it; Conga merges the token,
     # then Word evaluates the IF to show the fallback for a blank affiliation.
     code = f' IF "{token}" = "" "{fallback}" "{token}" '
+    suffix = org["retired_suffix"]
+    retired_true = org["retired_status_true_value"]
+    retired_code = f' IF "{retired_token}" = "{retired_true}" "{suffix}" "" '
     return (
         f"<w:p>{para_props(rpr)}"
-        f'<w:r>{rpr}<w:fldChar w:fldCharType="begin"/></w:r>'
-        f'<w:r>{rpr}<w:instrText xml:space="preserve">{escape(code)}</w:instrText></w:r>'
-        f'<w:r>{rpr}<w:fldChar w:fldCharType="separate"/></w:r>'
-        f"{text_run(rpr, token)}"
-        f'<w:r>{rpr}<w:fldChar w:fldCharType="end"/></w:r>'
+        f"{word_if_field(rpr, code, token)}"
+        f"{word_if_field(rpr, retired_code, retired_token)}"
         "</w:p>"
     )
 
 
-def document_xml(spec, preferred_token, last_token, affiliation_token):
+def board_affiliations_paragraph(spec, token):
+    board = spec["layout"]["board_affiliations"]
+    rpr = run_props(board["initial_font_family"], board["initial_font_pt"])
+    code = f' IF "{token}" = "" "" "{token}" '
+    return f"<w:p>{para_props(rpr)}{word_if_field(rpr, code, token)}</w:p>"
+
+
+def document_xml(spec, preferred_token, last_token, affiliation_token, retired_token, board_token):
     layout, media = spec["layout"], spec["media"]
     page_w, page_h = twips(layout["page_width_mm"]), twips(layout["page_height_mm"])
     side = twips(layout["content_left_margin_from_page_mm"])
@@ -108,7 +126,8 @@ def document_xml(spec, preferred_token, last_token, affiliation_token):
         f'<w:tr><w:trPr><w:cantSplit/><w:trHeight w:val="{row_h}" w:hRule="exact"/></w:trPr>'
         f'<w:tc><w:tcPr><w:tcW w:w="{content_w}" w:type="dxa"/><w:vAlign w:val="center"/></w:tcPr>'
         f"{name_paragraph(spec, preferred_token, last_token)}"
-        f"{affiliation_paragraph(spec, affiliation_token)}"
+        f"{affiliation_paragraph(spec, affiliation_token, retired_token)}"
+        f"{board_affiliations_paragraph(spec, board_token)}"
         "</w:tc></w:tr></w:tbl>"
     )
     trailing = (
@@ -189,7 +208,7 @@ CORE_XML = (
 )
 
 
-def build(output, preferred_token, last_token, affiliation_token):
+def build(output, preferred_token, last_token, affiliation_token, retired_token, board_token):
     spec = json.loads(SPEC.read_text(encoding="utf-8"))
     output = Path(output)
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -197,7 +216,9 @@ def build(output, preferred_token, last_token, affiliation_token):
         "[Content_Types].xml": CONTENT_TYPES_XML,
         "_rels/.rels": ROOT_RELS_XML,
         "docProps/core.xml": CORE_XML,
-        "word/document.xml": document_xml(spec, preferred_token, last_token, affiliation_token),
+        "word/document.xml": document_xml(
+            spec, preferred_token, last_token, affiliation_token, retired_token, board_token
+        ),
         "word/styles.xml": STYLES_XML,
         "word/settings.xml": SETTINGS_XML,
         "word/_rels/document.xml.rels": DOC_RELS_XML,
@@ -217,8 +238,13 @@ def main():
     parser.add_argument("--preferred-name-token", default="{{PREFERRED_NAME_CONGA_FIELD}}")
     parser.add_argument("--last-name-token", default="{{LAST_NAME_CONGA_FIELD}}")
     parser.add_argument("--affiliation-token", default="{{PRIMARY_AFFILIATION_CONGA_FIELD}}")
+    parser.add_argument("--retired-token", default="{{RETIRED_STATUS_CONGA_FIELD}}")
+    parser.add_argument("--board-affiliations-token", default="{{BOARD_AFFILIATIONS_CONGA_FIELD}}")
     args = parser.parse_args()
-    out = build(args.output, args.preferred_name_token, args.last_name_token, args.affiliation_token)
+    out = build(
+        args.output, args.preferred_name_token, args.last_name_token,
+        args.affiliation_token, args.retired_token, args.board_affiliations_token,
+    )
     print(f"Wrote {out}")
 
 
