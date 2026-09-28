@@ -5,6 +5,7 @@
     "label_width_mm": 76,
     "label_height_mm": 50,
     "roll_width_including_liner_mm": 79,
+    "width_measurement_evidence": "user_measured_and_confirmed_76_mm_label_and_79_mm_backing",
     "liner_overhang_total_mm": 3,
     "label_offset_from_roll_left_mm": 1.5,
     "label_offset_from_roll_right_mm": 1.5,

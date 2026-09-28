@@ -4,7 +4,7 @@ The first version is a single-badge Word template for Conga Composer for Salesfo
 
 ## Current print status
 
-The user reports that both [standard](badge-sample-bert-nielson.png) and [retired](badge-sample-bert-nielson-retired.png) PNG badge samples printed correctly on the ZD421. Their printed resolution looks good. This confirms those two PNG print paths on the current stock and settings; a Salesforce-to-Conga print job remains outstanding. Thermal transfer is the default mode in the installed driver. The user confirmed that Preferred Communication Name contains the intended first name, so pairing it with Last Name will not repeat a full name.
+The user reports that both [standard](badge-sample-bert-nielson.png) and [retired](badge-sample-bert-nielson-retired.png) PNG badge samples printed correctly on the ZD421. Their printed resolution looks good. The user measured and confirmed a **76 mm label width** and **79 mm full backing width**. This confirms those two PNG print paths on the current stock and settings; a Salesforce-to-Conga print job remains outstanding. Thermal transfer is the default mode in the installed driver. The user confirmed that Preferred Communication Name contains the intended first name, so pairing it with Last Name will not repeat a full name.
 
 ## Badge content
 
