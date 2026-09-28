@@ -19,7 +19,8 @@
     "dpi": 203,
     "dpi_evidence": "Windows 11 driver name reported by user",
     "printer_language": "ZPL",
-    "print_method": "thermal_transfer_ribbon_installed_driver_mode_to_verify",
+    "print_method": "thermal_transfer_ribbon_installed_driver_default_confirmed",
+    "sample_print_resolution": "two_png_samples_visually_approved_by_user",
     "ribbon_color": "black",
     "ribbon_location_reported": "top",
     "ribbon_width_mm": 110,
@@ -37,10 +38,13 @@
   },
   "job": {
     "labels_per_run": 1,
-    "output": "pdf_via_conga_composer"
+    "output": "pdf_via_conga_composer",
+    "physical_png_samples": "two_printed_correctly_user_reported",
+    "salesforce_to_conga_print_job": "pending"
   },
   "salesforce_source_fields": {
     "preferred_name": "Contact.Preferred_Communication_Name__c",
+    "preferred_name_semantics": "intended_first_name_user_confirmed",
     "last_name": "Contact.LastName",
     "primary_affiliation": "Contact.Primary_Affiliation__c",
     "retired_from_primary_affiliation": "confirm_with_salesforce_owner",

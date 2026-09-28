@@ -54,6 +54,8 @@ After ATS confirms installation, follow their connection instructions and connec
    | RTC refresh | Start print time |
    | Cancel all current and queued printing documents | Off |
 
+   **Thermal transfer** is the default printing mode in this driver installation. The other values above are the current settings shown in the print options screenshot.
+
    ![ZD421 Print Options showing speed, darkness, thermal transfer, and offsets](../images/Screenshot%202026-09-28%20150751.png)
 
 6. If you changed settings, select **Apply**, then **OK**. If the screen differs or a setting is unavailable, ask ATS to review the driver configuration.

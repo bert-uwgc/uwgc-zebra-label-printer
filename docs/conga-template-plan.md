@@ -2,6 +2,10 @@
 
 The first version is a single-badge Word template for Conga Composer for Salesforce, rendered to PDF for printing. It uses the geometry and draft typography in [badge-template-spec.json](badge-template-spec.json). The JSON records design inputs; it is not a Conga template.
 
+## Current print status
+
+The user reports that both [standard](badge-sample-bert-nielson.png) and [retired](badge-sample-bert-nielson-retired.png) PNG badge samples printed correctly on the ZD421. Their printed resolution looks good. This confirms those two PNG print paths on the current stock and settings; a Salesforce-to-Conga print job remains outstanding. Thermal transfer is the default mode in the installed driver. The user confirmed that Preferred Communication Name contains the intended first name, so pairing it with Last Name will not repeat a full name.
+
 ## Badge content
 
 Keep the organization on its existing line and append ` (Retired)` when the person is retired from that primary affiliation. Put board affiliation beneath the organization, using `Board of Directors` and/or `Foundation Board` when applicable. Omit the board line when neither affiliation applies; if both apply, put each on its own line. This keeps retirement attached to the organization and board service distinct. The current 15 pt affiliation typography applies to these lines; review any overflow rather than shrinking below 15 pt.
@@ -28,7 +32,7 @@ The affiliation fallback, retired suffix, and optional board text are real Word 
 - The Windows print queue appears as **ZDesigner ZD421-203dpi ZPL**. At the nominal 8 dots per mm, the label is 608 by 400 dots and the 3 mm gap is 24 dots. Use physical dimensions for the Word and PDF page; the dot counts are reference values for printer diagnostics or ZPL work.
 - Start with a 3 mm safe inset inside the sticker on every side, leaving a provisional 70 mm by 44 mm content area. Adjust it after a physical print check.
 - Use a borderless one-cell table covering that content area. Set its cell to vertical middle alignment. Center the name, organization, and board paragraphs horizontally in the cell so they move together as one block when the name wraps.
-- Put `{{PREFERRED_NAME_CONGA_FIELD}} {{LAST_NAME_CONGA_FIELD}}` on one centered paragraph at an initial **26 pt Arial Bold**. Allow normal word wrapping up to two lines. A short name stays on one line. Check that Preferred Communication Name contains only the intended given or preferred name so Last Name is not repeated.
+- Put `{{PREFERRED_NAME_CONGA_FIELD}} {{LAST_NAME_CONGA_FIELD}}` on one centered paragraph at an initial **26 pt Arial Bold**. Allow normal word wrapping up to two lines. A short name stays on one line. Preferred Communication Name was confirmed to contain the intended given or preferred name, so Last Name should not be repeated.
 - Put `{{PRIMARY_AFFILIATION_CONGA_FIELD}}` beneath it on a centered paragraph at **15 pt Arial**. The source is Contact Primary Affiliation. Append ` (Retired)` only when the affiliation is nonblank and the separate retirement status field is true. For a blank affiliation, display **Individual Donor** without the retired suffix. Supply an approved abbreviation when the full affiliation does not fit. Do not silently truncate it.
 - Put board affiliations beneath the organization in a centered **15 pt Arial** paragraph. The merged display value must be blank, `Board of Directors`, `Foundation Board`, or both labels separated by a line break. The Word IF field hides the text when the value is blank, though the empty paragraph remains in the template. Confirm whether Salesforce provides one multi-select field or separate membership fields before choosing the display value.
 - Treat 26 pt and the 3 mm safe inset as first-pass values. Never reduce either text style below 15 pt. If a name exceeds two lines, review a smaller-font fallback or an approved display-name spelling before printing.
@@ -40,17 +44,16 @@ The Salesforce source fields supplied are `Contact.Preferred_Communication_Name_
 1. Confirm the Salesforce field API names for retirement status and board affiliation with the Salesforce owner. In Conga Composer's Template Builder, select Word format with Include Label off, copy the exact tokens for all source fields, and replace the corresponding placeholders. Confirm the Contact record is the solution's master record or that all fields appear in its dataset. A test merge must confirm that retirement yields `True` only for a nonblank affiliation and that board membership yields the exact display labels and line break described above.
 2. For a blank Primary Affiliation, a Word IF field can display **Individual Donor**; Conga requires the IF itself to be a real Word field, with the Conga token inside it. Alternatively, a controlled Salesforce display field or query expression can supply the fallback. An approved abbreviation still needs a defined source; the raw affiliation field cannot choose one from its length alone.
 3. Store the Word file as a Conga template and configure the solution for **one record and one badge per run**, with PDF output. Do not add repeating detail regions.
-4. In the Zebra driver, use the **79 mm media width**, **50 mm sticker length**, and **3 mm gap**, then print at actual size. The document page leaves 1.5 mm blank on each side over the backing. Confirm gap sensing and calibrate for the loaded roll.
-5. A **110 mm black thermal-transfer ribbon** is reported installed. Its width exceeds the 79 mm backing, meeting Zebra's width guidance. Verify that the driver is in thermal-transfer mode and that the ribbon formulation works with the stock. Cross-check the physical printer against the 203 dpi Windows driver during the first print proof.
-6. Test with synthetic short, long, hyphenated, and accented names; long and abbreviated organizations; a blank organization; retired and nonretired affiliations; and zero, one, or both board memberships. Inspect both the PDF and a physical print for wrapping, clipping, centering, and feed alignment.
+4. In the Zebra driver's **Page Setup**, select **Custom**, **76 mm width**, **50 mm height**, and **Labels with gaps**, as documented in the [printer setup manual](zd421-setup-manual.md). The **79 mm** measurement is the roll width including backing, not the working driver width. The Word template currently uses a 79 mm page; confirm actual-size PDF output and centering through the Salesforce-to-Conga print job.
+5. A **110 mm black thermal-transfer ribbon** is reported installed. Its width exceeds the 79 mm backing, meeting Zebra's width guidance. Thermal transfer is the default mode in the installed driver, and the two PNG sample prints had acceptable visual resolution. The printer's physical DPI has not been independently measured.
+6. The two PNG badge samples printed correctly. Continue with a Salesforce-to-Conga print job, then test short, long, hyphenated, and accented names; long and abbreviated organizations; a blank organization; retired and nonretired affiliations; and zero, one, or both board memberships. Inspect the merged PDF and physical print for wrapping, clipping, centering, and feed alignment.
 
 ## Inputs still pending
 
-- Ribbon-media pairing; verify thermal-transfer mode in the driver. Cross-check physical printer resolution during the first print proof.
 - Exact Conga Template Builder Word merge tokens, and the approved organization abbreviation source.
 - Salesforce source fields and exact Conga tokens for retirement status and Board of Directors/Foundation Board membership.
-- Confirmation that Preferred Communication Name contains the intended first-name text rather than a full name.
-- Physical print results to finalize the safe inset and font size.
+- Salesforce-to-Conga PDF and physical print result, including whether the current 79 mm Word page aligns correctly with the 76 mm driver width.
+- Remaining edge-case print results to finalize the safe inset and font size.
 
 ## References
 
