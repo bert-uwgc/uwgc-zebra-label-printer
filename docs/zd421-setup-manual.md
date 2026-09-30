@@ -63,5 +63,3 @@ After ATS confirms installation, follow their connection instructions and connec
 ## 4. Recalibrate if the printer cannot detect the labels
 
 If the printer reports a media or label detection error, make sure labels are loaded correctly, the cover is closed, and the printer is on. Press and hold **Pause** and **Cancel** together for about **3 seconds**, then release. The printer should feed and measure a few labels. Wait for the **Status** light to return to solid green before printing again. Zebra specifies a two-second hold for this [SmartCal media calibration procedure](https://docs.zebra.com/us/en/printers/desktop/zd421-and-zd621-desktop-printers-user-guide/setup/running-a-smartcal-media-calibration.html). If the printer still cannot recognize the labels, ask ATS for help.
-
-Zebra also directs Windows users to install the correct driver before connecting the printer to the computer: [ZD421 Windows driver setup](https://docs.zebra.com/us/en/printers/desktop/zd421-and-zd621-desktop-printers-user-guide/c-zd620-420-setup-for-windows/t-zd620-zd420-installing-the-windows-printer-drivers.html).
