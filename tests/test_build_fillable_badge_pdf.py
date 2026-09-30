@@ -47,7 +47,13 @@ class FillableBadgePdfTest(unittest.TestCase):
         self.assertEqual({w.get("/T") for w in widgets}, expected)
         self.assertTrue(all(int(w.get("/Q", 0)) == 1 for w in widgets))
         name_widget = next(w for w in widgets if w.get("/T") == "display_name")
-        self.assertIn("/HeBo 0 Tf", name_widget.get("/DA", ""))
+        self.assertIn("/HeBo 28 Tf", name_widget.get("/DA", ""))
+        org_widget = next(w for w in widgets if w.get("/T") == "primary_affiliation")
+        self.assertIn("/Helv 15 Tf", org_widget.get("/DA", ""))
+        board_widgets = [w for w in widgets if w.get("/T", "").startswith("board_affiliation_")]
+        self.assertTrue(all("/Helv 13 Tf" in w.get("/DA", "") for w in board_widgets))
+        board_heights = [float(w["/Rect"][3]) - float(w["/Rect"][1]) for w in board_widgets]
+        self.assertAlmostEqual(board_heights[0], board_heights[1], delta=0.05)
         fonts = reader.trailer["/Root"]["/AcroForm"]["/DR"]["/Font"]
         self.assertEqual(fonts["/HeBo"]["/BaseFont"], "/Helvetica-Bold")
         self.assertNotIn("CONGA_FIELD", page.extract_text())

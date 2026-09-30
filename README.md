@@ -8,6 +8,8 @@ The badge design starts with [label measurements](docs/label_dimensions.md), a [
 
 Open [the blank fillable badge PDF](output/pdf/manual-badge-label.pdf) in a PDF viewer that supports forms. Click the large name area, then enter the organization and any board affiliations in the fields below it. Enter `Individual Donor` when there is no organization; append ` (Retired)` to an organization when applicable. Leave unused board lines empty. Preview the filled label before printing.
 
+The name uses a fixed, prominent font so browser PDF viewers display it consistently. If a long name extends beyond the field, use an approved shorter display name before printing.
+
 Print at **Actual size / 100%** on 79 x 50 mm media, one PDF page per label. The page includes the 1.5 mm liner offset on each side of the 76 mm sticker. Form values and layout were checked locally; a physical printer check is still needed.
 
 To rebuild the blank PDF, install `pymupdf` and `pypdf`, then run `python tools/build_fillable_badge_pdf.py`. The output contains no Salesforce merge fields or prefilled badge data.

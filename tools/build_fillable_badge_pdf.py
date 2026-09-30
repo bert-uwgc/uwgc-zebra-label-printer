@@ -67,9 +67,11 @@ def center_fields_and_add_bold_font(pdf_bytes):
         field = annotation.get_object()
         field[NameObject("/Q")] = NumberObject(1)
         if field["/T"] == "display_name":
-            field[NameObject("/DA")] = TextStringObject("/HeBo 0 Tf 0 g")
+            field[NameObject("/DA")] = TextStringObject("/HeBo 28 Tf 0 g")
         elif field["/T"] == "primary_affiliation":
-            field[NameObject("/DA")] = TextStringObject("/Helv 0 Tf 0 g")
+            field[NameObject("/DA")] = TextStringObject("/Helv 15 Tf 0 g")
+        else:
+            field[NameObject("/DA")] = TextStringObject("/Helv 13 Tf 0 g")
     return writer
 
 
@@ -84,20 +86,20 @@ def build(output):
     x0 = mm(layout["content_left_margin_from_page_mm"])
     x1 = mm(layout["page_width_mm"] - layout["content_right_margin_from_page_mm"])
 
-    # One name field allows a full display name to stay centered. The zero font
-    # size asks PDF readers to fit longer names to the available width.
-    add_text_field(page, document, "display_name", "Full display name", (x0, mm(10), x1, mm(26)), "Helv", 0)
+    # Explicit font sizes render consistently in browser PDF viewers, which may
+    # show automatic font sizing as tiny text while the form is being edited.
+    add_text_field(page, document, "display_name", "Full display name", (x0, mm(8), x1, mm(22)), "Helv", 28)
     add_text_field(
         page, document, "primary_affiliation", "Organization or Individual Donor; add (Retired) if applicable",
-        (x0, mm(28), x1, mm(35)), "Helv", 0,
+        (x0, mm(24), x1, mm(31)), "Helv", 15,
     )
     add_text_field(
         page, document, "board_affiliation_1", "Board affiliation, first line (optional)",
-        (x0, mm(36), x1, mm(41)), "Helv", 15,
+        (x0, mm(33), x1, mm(39)), "Helv", 13,
     )
     add_text_field(
         page, document, "board_affiliation_2", "Board affiliation, second line (optional)",
-        (x0, mm(41), x1, mm(47)), "Helv", 15,
+        (x0, mm(40), x1, mm(46)), "Helv", 13,
     )
 
     output = Path(output)
