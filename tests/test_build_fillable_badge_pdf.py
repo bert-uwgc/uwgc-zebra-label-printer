@@ -7,6 +7,7 @@ import uuid
 from pathlib import Path
 
 from pypdf import PdfReader
+from pypdf.generic import IndirectObject
 
 
 REPO = Path(__file__).resolve().parents[1]
@@ -54,7 +55,10 @@ class FillableBadgePdfTest(unittest.TestCase):
         self.assertTrue(all("/Helv 13 Tf" in w.get("/DA", "") for w in board_widgets))
         board_heights = [float(w["/Rect"][3]) - float(w["/Rect"][1]) for w in board_widgets]
         self.assertAlmostEqual(board_heights[0], board_heights[1], delta=0.05)
-        fonts = reader.trailer["/Root"]["/AcroForm"]["/DR"]["/Font"]
+        acroform = reader.trailer["/Root"]["/AcroForm"]
+        self.assertIn("/DA", acroform)
+        fonts = acroform["/DR"]["/Font"]
+        self.assertIsInstance(fonts.raw_get("/HeBo"), IndirectObject)
         self.assertEqual(fonts["/HeBo"]["/BaseFont"], "/Helvetica-Bold")
         self.assertNotIn("CONGA_FIELD", page.extract_text())
 

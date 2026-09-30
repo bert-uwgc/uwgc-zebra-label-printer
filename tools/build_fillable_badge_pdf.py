@@ -16,7 +16,7 @@ from pypdf.generic import DictionaryObject, NameObject, NumberObject, TextString
 
 REPO = Path(__file__).resolve().parents[1]
 SPEC = REPO / "docs" / "badge-template-spec.json"
-DEFAULT_OUTPUT = REPO / "output" / "pdf" / "manual-badge-label.pdf"
+DEFAULT_OUTPUT = REPO / "output" / "pdf" / "manual-badge-label-v2.pdf"
 
 
 def mm(value):
@@ -47,22 +47,23 @@ def center_fields_and_add_bold_font(pdf_bytes):
     writer = PdfWriter()
     writer.clone_document_from_reader(PdfReader(io.BytesIO(pdf_bytes)))
     acroform = writer._root_object["/AcroForm"].get_object()
+    acroform[NameObject("/DA")] = TextStringObject("/Helv 15 Tf 0 g")
     resources = acroform.get("/DR") or DictionaryObject()
     acroform[NameObject("/DR")] = resources
     fonts = resources.get("/Font") or DictionaryObject()
     resources[NameObject("/Font")] = fonts
-    fonts[NameObject("/Helv")] = DictionaryObject({
+    fonts[NameObject("/Helv")] = writer._add_object(DictionaryObject({
         NameObject("/Type"): NameObject("/Font"),
         NameObject("/Subtype"): NameObject("/Type1"),
         NameObject("/BaseFont"): NameObject("/Helvetica"),
         NameObject("/Encoding"): NameObject("/WinAnsiEncoding"),
-    })
-    fonts[NameObject("/HeBo")] = DictionaryObject({
+    }))
+    fonts[NameObject("/HeBo")] = writer._add_object(DictionaryObject({
         NameObject("/Type"): NameObject("/Font"),
         NameObject("/Subtype"): NameObject("/Type1"),
         NameObject("/BaseFont"): NameObject("/Helvetica-Bold"),
         NameObject("/Encoding"): NameObject("/WinAnsiEncoding"),
-    })
+    }))
     for annotation in writer.pages[0]["/Annots"]:
         field = annotation.get_object()
         field[NameObject("/Q")] = NumberObject(1)
